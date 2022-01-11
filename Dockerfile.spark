@@ -1,0 +1,27 @@
+FROM hadoop:latest
+
+MAINTAINER HuongDinh <rdinh522@gmail.com>
+
+WORKDIR /root
+
+COPY spark-2.2.0-bin-hadoop2.7.tgz /root/
+
+COPY wordcount.py /root/
+
+# install spark 3.1.2
+RUN tar -xzvf spark-3.1.2-bin-hadoop3.2.tgz && \
+    mv spark-3.1.2-bin-hadoop3.2 /usr/spark && \
+    rm spark-3.1.2-bin-hadoop3.2.tgz
+
+# set environment variable
+ENV SPARK_HOME=/usr/spark 
+ENV PATH=$PATH:/usr/spark/bin
+ENV HADOOP_CONF_DIR=/usr/hadoop/etc/hadoop
+ENV LD_LIBRARY_PATH=/usr/hadoop/lib/native:$LD_LIBRARY_PATH
+
+COPY spark/* $SPARK_HOME/conf/
+
+EXPOSE 4040 4041 6066 7077 8080 18080 8081 8088 80
+
+CMD [ "sh", "-c", "bash"]
+

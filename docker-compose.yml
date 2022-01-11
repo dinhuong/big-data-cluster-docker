@@ -1,0 +1,91 @@
+version: '3.7'
+
+services:
+  master:
+    container_name: master
+    image: spark2.2-zeppelin:latest
+    hostname: master
+    command: tail -f /dev/null
+    environment:
+      - ZEPPELIN_PORT=80
+      - ZEPPELIN_NOTEBOOK_DIR=/usr/zeppelin/notebook
+      - SPARK_MASTER=spark://master:7077
+      - MASTER=spark://master:7077
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_DRIVER_MEMORY=128m
+      - SPARK_EXECUTOR_MEMORY=256m
+    healthcheck:
+      disable: true
+    ports:
+      - 4040:4040
+      - 7077:7077
+      - 6066:6066
+      - 8081:8081
+      - 8080:8080
+      - 80:80
+      - 18080:18080
+      - 8088:8088
+      - 9870:9870
+      - 9000:9000
+    networks:
+      hostnet:
+        ipv4_address: 172.21.0.2
+    extra_hosts:
+      - "worker1:172.21.0.3"
+      - "worker2:172.21.0.4"
+    restart: "always"
+    volumes:
+      - ./hadoop_namenode:/root/hdfs
+      - ./notebook:/usr/zeppelin/notebook
+
+  worker1:
+    container_name: worker1
+    image: spark2.2-zeppelin:latest
+    hostname: worker1
+    command: tail -f /dev/null
+    depends_on:
+      - master
+    healthcheck:
+      disable: true
+    ports:
+      - 8082:8081
+    networks:
+      hostnet:
+        ipv4_address: 172.21.0.3
+    extra_hosts:
+      - "master:172.21.0.2"
+      - "worker2:172.21.0.4"
+    restart: "always"
+    volumes:
+      - ./hadoop_datanode1:/root/hdfs
+
+  worker2:
+    container_name: worker2
+    image: spark2.2-zeppelin:latest
+    hostname: worker2
+    command: tail -f /dev/null
+    depends_on:
+      - master
+    healthcheck:
+      disable: true
+    ports:
+      - 8083:8081
+    networks:
+      hostnet:
+        ipv4_address: 172.21.0.4
+    extra_hosts:
+      - "master:172.21.0.2"
+      - "worker1:172.21.0.3"
+    restart: "always"
+    volumes:
+      - ./hadoop_datanode2:/root/hdfs
+
+networks:
+  hostnet:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.21.0.0/24"
+
+  

@@ -1,0 +1,21 @@
+FROM spark2.2:latest
+
+MAINTAINER HuongDinh <rdinh522@gmail.com>
+
+WORKDIR /root
+
+COPY zeppelin-0.10.0-bin-all.tgz /root/
+
+# install zeppelin 0.10.0
+RUN tar -xzvf zeppelin-0.10.0-bin-all.tgz && \
+    mv zeppelin-0.10.0-bin-all /usr/zeppelin && \
+    rm zeppelin-0.10.0-bin-all.tgz
+
+COPY zeppelin/* /usr/zeppelin/conf/
+
+COPY start-cluster.sh .
+
+ENV ZEPPELIN_HOME=/usr/zeppelin 
+
+CMD ["bash"]
+

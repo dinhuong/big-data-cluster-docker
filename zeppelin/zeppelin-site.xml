@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+
+<property>
+  <name>zeppelin.server.addr</name>
+  <value>0.0.0.0</value>
+  <description>Server binding address</description>
+</property>
+
+<property>
+  <name>zeppelin.server.port</name>
+  <value>80</value>
+  <description>Server port.</description>
+</property>
+
+<property>
+  <name>zeppelin.notebook.dir</name>
+  <value>/usr/zeppelin/notebook</value>
+  <description>path or URI for notebook persist</description>
+</property>
+
+</configuration>
