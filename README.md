@@ -1,6 +1,6 @@
 # big-data-cluster-docker
 
-You can download my cluster by 2 ways:
+You can download my cluster in 2 ways:
 
 ## Pull Docker images from Dockerhub
 docker pull huongdt/spark-master
