@@ -1,4 +1,11 @@
 # big-data-cluster-docker
+Hadoop 3.3
+
+
+Spark 2.2
+
+
+Zeppelin 0.10
 
 You can download my cluster in 2 ways:
 
